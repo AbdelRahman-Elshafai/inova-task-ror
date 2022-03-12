@@ -32,7 +32,6 @@ FAKER_CONSTANTS::NUMBER_OF_STORIES.times do |item|
     average_rating: Faker::Number.within(range: 1.0..5.0).round(2),
     number_of_ratings: Faker::Number.within(range: 1..1000000)
   }
-  Rails.logger.debug("index: #{item}")
 
 
 end
@@ -41,11 +40,11 @@ Story.insert_all!(stories)
 story_reviews = []
 FAKER_CONSTANTS::NUMBER_OF_STORY_REVIEWS.times do
   random_user = User.find(User.pluck(:id).sample)
-  random_story = Story.find(Story.pluck(:id).sample)
+  random_story_id = random_user.stories.pluck(:id).sample
 
   story_reviews << {
     user_id: random_user.id,
-    story_id: random_story.id,
+    story_id: random_story_id,
     rating: Faker::Number.within(range: 1..5),
     comment: Faker::Lorem.paragraph
   }
